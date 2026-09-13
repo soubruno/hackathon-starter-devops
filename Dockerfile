@@ -1,20 +1,20 @@
-FROM node:18-alpine
+# Usa versão moderna do Node.js sobre Alpine Linux
+FROM node:22-alpine
 
+# Define o diretório de trabalho no container
 WORKDIR /app
 
-# Copia dependências
+# Copia manifestos de dependências
 COPY package*.json ./
 
-# Instala apenas dependências de produção para manter a imagem leve
-RUN npm ci --omit=dev
+# Instala dependências de produção sem disparar scripts adicionais
+RUN npm install --omit=dev --ignore-scripts --no-audit
 
-# Copia o restante do código da aplicação
+# Copia os arquivos da aplicação
 COPY . .
 
-# Variável de ambiente padrão
-ENV NODE_ENV=production
-ENV PORT=8080
-
+# Expõe a porta padrão da aplicação
 EXPOSE 8080
 
-CMD ["npm", "start"]
+# Inicia a aplicação
+CMD ["node", "app.js"]
