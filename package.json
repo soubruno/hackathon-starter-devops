@@ -23,6 +23,9 @@
     "test:e2e:live": "playwright test --config=test/playwright.config.js --project=chromium",
     "test:e2e:replay": "playwright test --config=test/playwright.config.js --project=chromium-replay",
     "test:e2e:custom": "playwright test --config=test/playwright.config.js",
+    "test:unit": "mocha test/unit/**/*.test.js --timeout=10000 --exit",
+    "test:integration": "mocha test/integration/**/*.test.js --timeout=20000 --exit",
+    "test:coverage": "c8 --reporter=lcov --reporter=text mocha test/**/*.test.js --timeout=30000 --exit",
     "pretest:e2e:live": "npx playwright install chromium",
     "pretest:e2e:replay": "npx playwright install chromium",
     "pretest:e2e:custom": "npx playwright install chromium",
@@ -49,7 +52,6 @@
     "@simplewebauthn/server": "^14.0.1",
     "@zapier/secret-scrubber": "^1.1.6",
     "bootstrap": "^5.3.8",
-    "bootstrap-social": "github:SeattleDevs/bootstrap-social",
     "bowser": "^2.14.1",
     "chart.js": "^4.5.1",
     "cheerio": "^1.2.0",
@@ -103,35 +105,18 @@
     "eslint-plugin-chai-friendly": "^1.2.1",
     "globals": "^17.12.0",
     "husky": "^9.1.7",
-    "lint-staged": "^17.5.0",
-    "mocha": "^12.0.0",
+    "mocha": "^12.0.1",
     "mongodb-memory-server": "^11.2.0",
     "nock": "15.0.0-beta.12",
     "prettier": "^3.9.6",
     "sinon": "^22.1.0",
     "supertest": "^7.2.2"
   },
-  "overrides": {
-    "encoding-sniffer": "github:SeattleDevs/encoding-sniffer",
-    "fetch-blob": "github:SeattleDevs/fetch-blob"
-  },
-  "overrideReasons": {
-    "encoding-sniffer": "cheerio",
-    "fetch-blob": "@googleapis/drive"
-  },
   "engines": {
-    "node": ">=24.18.0"
+    "node": ">=20.0.0"
   },
   "allowScripts": {
     "@parcel/watcher": true,
     "mongodb-memory-server": true
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix"
-    ],
-    "*": [
-      "prettier --write --ignore-unknown"
-    ]
   }
 }
