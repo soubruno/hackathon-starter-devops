@@ -6,8 +6,8 @@ const { LastFmNode } = require('lastfm');
 const multer = require('multer');
 const { OAuth } = require('oauth');
 const { Octokit } = require('@octokit/rest');
-const stripe = require('stripe')(process.env.STRIPE_SKEY);
-const twilioClient = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
+const stripe = process.env.STRIPE_SKEY ? require('stripe')(process.env.STRIPE_SKEY) : null;
+const twilioClient = (process.env.TWILIO_SID && process.env.TWILIO_TOKEN) ? require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_TOKEN) : null;
 const googledrive = require('@googleapis/drive');
 const googlesheets = require('@googleapis/sheets');
 const validator = require('validator');
@@ -484,6 +484,10 @@ exports.getStripe = (req, res) => {
  * Make a payment.
  */
 exports.postStripe = (req, res) => {
+  if (!stripe) {
+    req.flash('errors', { msg: 'Stripe is not configured in this environment.' });
+    return res.redirect('/api/stripe');
+  }
   const { stripeToken, stripeEmail } = req.body;
   stripe.charges.create(
     {
