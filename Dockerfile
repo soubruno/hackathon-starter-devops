@@ -13,6 +13,9 @@ RUN npm install --omit=dev --ignore-scripts --no-audit
 # Copia os arquivos da aplicação
 COPY . .
 
+# Cria o diretório de estilos e gera os assets caso o script exista
+RUN mkdir -p public/css && npm run build --if-present
+
 # Expõe a porta padrão da aplicação
 EXPOSE 8080
 
